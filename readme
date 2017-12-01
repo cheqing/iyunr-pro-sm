@@ -1,0 +1,43 @@
+项目技术架构：SpringBoot+Druid+Mybatis
+
+springboot项目参考文章:
+	http://projects.spring.io/spring-boot/
+	https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#getting-started
+	http://blog.csdn.net/jsyxcjw/article/details/46763639/
+	http://blog.csdn.net/king866/article/details/53996632
+	http://blog.csdn.net/chszs/article/details/50610474
+	http://blog.csdn.net/javastudyr/article/details/52526220
+	http://7player.cn/2015/08/30/%E3%80%90%E5%8E%9F%E5%88%9B%E3%80%91%E5%9F%BA%E4%BA%8Espringboot-mybatis%E5%AE%9E%E7%8E%B0springmvc-web%E9%A1%B9%E7%9B%AE/
+	
+
+springboot项目注意事项：
+	1.我们在pom.xml中已经配置了parent的节点使用了spring-boot-starter-parent。他默认提供了一些有用的maven默认配置，也默认引用了一些开发包，
+	所以我们在引用一些其他包的时候可以不制定版本号<version>,为了提高兼容性，他默认配置的jdk版本是1.6，所以我们如果使用更高版本的jdk需要我们自己在pom.xml中自己指定。
+	2.我们启动项目的方式有两种，一种可以直接运行main方法，另一种我们可以进入到项目路径下运行：mvn spring-boot:run。
+	3.为了创建可执行jar，我们需要在pom.xml中配置spring-boot-maven-plugin，这样我们就可是在项目根目录下通过命令：mvn package来打包了，
+	运行可执行jar的命令是：java -jar xxxx.jar 查看内部结构的命令是： jar tvf target/xxxxx.jar
+	4.@SpringBootApplication注解相当于@Configuration @EnableAutoConfiguration @ComponentScan这三个注解
+	5.@SpringBootApplication注解和@EnableAutoConfiguratio注解只能使用一次，所以建议用在main主类上
+	
+表结构：
+	CREATE TABLE `user` (
+	  `id` varchar(32) NOT NULL,
+	  `name` varchar(100) DEFAULT NULL,
+	  `age` int(3) DEFAULT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+	
+项目说明：
+	1.该项目的HelloController中提供了增删改查的事例，而且也有用于测试事物是否回滚的事例，现在所实现的都是基础功能，如需其他高级应用，请自行进行集成和编码。
+	2.controller和实体类中也添加了属性合法性验证，比较方便使用，而且代码也变得更加整洁。
+	3.项目的统一异常处理，最常见的也就是在执行@RequestMapping方法时发生的异常，处理业务逻辑时可能会发生很多问题，比如：数据库报错，请求参数错误，等。
+	对于提供restful服务的应用，使用@ControllerAdvice和@ExceptionHandler注解；对于使用模板渲染HTML的应用，实现HandlerExceptionResolver接口。我们这里使用前者。
+	其实两者的差别呢，也比较简单，提供restful服务的，就是返回json串数据，而对于使用模板渲染HTML的就是那些使用ModelAndView来返回数据的。
+	参考地址：http://blog.csdn.net/chinrui/article/details/71036544
+	https://segmentfault.com/a/1190000006749441
+	
+	ExceptionHandler, 方法注解, 作用于 Controller 级别. ExceptionHandler 注解为一个 Controler 定义一个异常处理器.
+	ControllerAdvice, 类注解, 作用于 整个 Spring 工程. ControllerAdvice 注解定义了一个全局的异常处理器.
+	需要注意的是, ExceptionHandler 的优先级比 ControllerAdvice 高, 即 Controller 抛出的异常如果既可以让 ExceptionHandler 标注的方法处理, 又可以让 ControllerAdvice 标注的类中的方法处理, 则优先让 ExceptionHandler 标注的方法处理.
+	
